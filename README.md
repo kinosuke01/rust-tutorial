@@ -31,6 +31,8 @@ rustfmt main.rs
 
 # プロジェクトディレクトリ作成
 cargo new hello_cargo
+# バイナリ生成プロジェクトにする場合
+cargo new hello_cargo --bin
 
 # プロジェクトビルド
 # target/debug/xxxx に実行ファイルができる
