@@ -1,8 +1,14 @@
-// 標準ライブラリのioモジュールを読み込み
-use std::io;
+use std::io;   // 標準ライブラリのioモジュールを読み込み
+use rand::Rng; // Rngトレイトの呼び出し (トレイト=Rubyのmoduleみたいなもの?)
 
 fn main() {
     println!("Guess the number!");
+
+    // thread_rng: 乱数生成器を返す
+    // gen_range: 乱数を返す(Rngで定義された関数?), 上限値は戻り値に含まないため1..101としている
+    let secret_number = rand::thread_rng().gen_range(1..101);
+    println!("Thesecret number is: {}", secret_number);
+
     println!("Please input your guess.");
 
     // imuutable(不変)な変数の定義

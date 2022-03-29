@@ -36,8 +36,13 @@ cargo new hello_cargo --bin
 
 # プロジェクトビルド
 # target/debug/xxxx に実行ファイルができる
+# 依存するライブラリのインストールも行う
 cd hello_cargo
 cargo build
+
+# ライブラリのアップグレード
+# Cargo.tomlで指定された範囲内での更新
+cargo update
 
 # プロジェクトビルドから実行まで一発で
 cargo run
