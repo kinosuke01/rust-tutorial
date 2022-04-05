@@ -1,5 +1,6 @@
-use std::io;   // 標準ライブラリのioモジュールを読み込み
-use rand::Rng; // Rngトレイトの呼び出し (トレイト=Rubyのmoduleみたいなもの?)
+use std::io;            // 標準ライブラリのioモジュールを読み込み
+use std::cmp::Ordering; // 列挙体 Less, Greater, Equal から成る
+use rand::Rng;          // Rngトレイトの呼び出し (トレイト=Rubyのmoduleみたいなもの?)
 
 fn main() {
     println!("Guess the number!");
@@ -31,6 +32,26 @@ fn main() {
         // Errだった場合にメッセージを残してクラッシュ
         .expect("Failed to read line");
 
+    // guessは定義済だったが、型替え再定義して上書きできる(シャドーイング)
+    // trimで入力値に含まれる改行コードを除去
+    // parseで文字列を解析して数値に変換する
+    // u32は非負整数の型。数値はデフォルトはi32で、32ビットの整数を表す
+    let guess: u32 = guess.trim().parse()
+        .expect("Please type a number!");
+
     // {}はプレースホルダーにあたる
     println!("You guessed: {}", guess);
+
+    // `cmp`メソッド
+    //   2値を比較する
+    //   引数には比較対象の参照を指定する
+    //   戻り値は、Ordering
+    // `match`式
+    //   cmpの結果の値を受け取り、{}内のkeyと照合する。
+    //   照合すれば、対応するvalを実行する
+    match guess.cmp(&secret_number) {
+        Ordering::Less => println!("Too small!"),
+        Ordering::Greater => println!("Too big"),
+        Ordering::Equal => println!("You win!"),
+    }
 }
