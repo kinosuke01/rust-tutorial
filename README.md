@@ -1,7 +1,6 @@
 ## Rust Tutorial
-ref: https://doc.rust-jp.rs/book-ja/  
-ref: https://www.rust-lang.org/ja/what/wasm  
-TODO: https://doc.rust-jp.rs/book-ja/ch02-00-guessing-game-tutorial.html  
+ref: https://doc.rust-jp.rs/book-ja/
+ref: https://www.rust-lang.org/ja/what/wasm
 
 ## コマンドメモ
 ```
