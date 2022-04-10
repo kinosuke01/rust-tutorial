@@ -2,7 +2,7 @@
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
 
-TODO: https://doc.rust-jp.rs/book-ja/ch03-00-common-programming-concepts.html
+TODO: https://doc.rust-jp.rs/book-ja/ch04-00-understanding-ownership.html
 
 ## コマンドメモ
 ```
