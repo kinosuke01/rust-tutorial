@@ -15,6 +15,9 @@ fn main() {
 
     // フィボナッチ数列のn番目を生成する。
     println!("{}", fibonacci_of(10));
+
+    // 所有権について
+    ownership_fn();
 }
 
 fn tup_fn() {
@@ -108,4 +111,49 @@ fn fibonacci_of(x: u32) -> u32 {
     } else {
         fibonacci_of(x - 2) + fibonacci_of(x - 1)
     }
+}
+
+fn ownership_fn() {
+    // sがスコープに入ると、有効になる
+    // スコープを抜けるまで、有効なまま
+    let s = "hello";
+    println!("{} s!!", s);
+
+    let mut s = String::from("hello"); // 可変データをヒープにメモリを確保
+    s.push_str(", world!");            // リテラルをstringに追加
+    println!("{}", s);
+
+    let s1 = String::from("hello"); // 可変データをヒープにメモリ確保
+    let s2 = s1;                    // 実データの所有権がs2にムーブ
+    // println!("{}, world!", s1);  // ここではs1はもう使えない
+    println!("{}, move world!", s2);
+
+    let s1 = String::from("hello");
+    let s2 = s1.clone();  // 実データ含めてコピー
+    println!("s1 = {}, s2 = {}, deep copy world!", s1, s2);
+
+    let x = 5; // リテラルは不変長なのでスタックにメモリ確保
+    let y = x; // スタックのデータは実データごとコピー
+    println!("x = {}, y = {}", x, y);
+
+    fn takes_ownership(some_string: String) {
+        println!("{}", some_string);
+    }
+    let s = String::from("hello");
+    takes_ownership(s);
+    // println!("s = {}", s); // 関数に所有権がムーブしたので使えない
+
+    fn makes_copy(some_integer: i32) {
+        println!("{}", some_integer);
+    }
+    let x = 5;
+    makes_copy(x);
+    println!("x = {}", x); // リテラルはコピーされるので関数実行後も使える
+
+    fn takes_and_gives_back(a_string: String) -> String {
+        a_string
+    }
+    let s1 = String::from("takes_and_gives_tack string");
+    let s2 = takes_and_gives_back(s1); // 所有権が関数から呼び出しもとにムーブ
+    println!("{}", s2);                // 呼び出し元にむーぶされたので使える
 }
