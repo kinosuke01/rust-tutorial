@@ -113,6 +113,8 @@ fn fibonacci_of(x: u32) -> u32 {
     }
 }
 
+// 所有権
+// ref: https://doc.rust-jp.rs/book-ja/ch04-00-understanding-ownership.html
 fn ownership_fn() {
     // sがスコープに入ると、有効になる
     // スコープを抜けるまで、有効なまま
