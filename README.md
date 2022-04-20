@@ -2,7 +2,7 @@
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
 
-TODO: https://doc.rust-jp.rs/book-ja/ch04-02-references-and-borrowing.html
+TODO: https://doc.rust-jp.rs/book-ja/ch04-03-slices.html
 
 ## コマンドメモ
 ```

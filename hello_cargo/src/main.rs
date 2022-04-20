@@ -18,6 +18,12 @@ fn main() {
 
     // 所有権について
     ownership_fn();
+
+    // 参照渡し
+    ref_fn();
+
+    // 文字列スライス
+    slice_fn();
 }
 
 fn tup_fn() {
@@ -158,4 +164,87 @@ fn ownership_fn() {
     let s1 = String::from("takes_and_gives_tack string");
     let s2 = takes_and_gives_back(s1); // 所有権が関数から呼び出しもとにムーブ
     println!("{}", s2);                // 呼び出し元にむーぶされたので使える
+}
+
+fn ref_fn() {
+    // &Stringで参照渡しになる
+    // 所有権は関数呼び出し側のまま、この関数が変数を借用する
+    fn calculate_length(s: &String) -> usize {
+        s.len()
+    } // ここでsのスコープは外れるが破棄はされない
+
+    let s1 = String::from("hello");
+    let len = calculate_length(&s1);
+    println!("The length of '{}' is {}.", s1, len); // s1は破棄されないのでここでも使える
+
+    // &mutとすることで可変となる
+    fn change(some_string: &mut String) {
+        some_string.push_str(", world");
+    }
+    let mut s = String::from("hello");
+    change(&mut s);
+    println!("s is {}", s);
+
+    // 複数の可変な参照は持てない
+    /*
+    let mut s = String::from("hello");
+    let r1 = &mut s;
+    let r2 = &mut s;
+    */
+
+    // 複数の不変な参照は持てるけど、
+    // 不変な参照を作成したら可変な参照は作成できない
+    /*
+    let mut s = String::from("hello");
+    let r1 = &s;     // OK
+    let r2 = &s;     // OK
+    let r3 = &mut s; // NG
+    */
+
+    // 関数を抜けたときに変数の実体がムーブされる
+    // 参照を返したとしても、実データがないためエラーとなる
+    /*
+    fn dangle() -> &String {
+        let s = String::from("hello");
+        &s
+    }
+    */
+}
+
+fn slice_fn() {
+    // 文字列スライス
+    // 文字列への部分的な参照
+    /*
+    let s = String::from("hello world");
+    let hello = &s[0..5];  // 0から4(5の1つ手前)の文字列
+    let world = &s[6..11]; // 6から10(11の1つ手前)の文字列
+    let hello2 = &s[..5];  // 最初から4まで
+    let world2 = &s[6..];  // 6から最後まで
+    let s2 = &s[..];       // 最初から最後まで
+    */
+
+    fn first_word(s: &String) -> &str {
+        // 文字列の各値を確認するためバイト列に変換
+        let bytes = s.as_bytes();
+
+        // iterはコレクションの各要素を変える
+        // enumerateはiterをラップしてタプル(添字,参照)を返す
+        for (i, &item) in bytes.iter().enumerate() {
+            // バイトリテラルを使って空白かどうかをチェック
+            if item == b' ' {
+                // 最初から空白の1つ手前までの文字列スライスを返す
+                return &s[0..i];
+            }
+        }
+        &s[..]
+    }
+    let mut s = String::from("hello world");
+    let word = first_word(&s);
+
+    // s.clear();
+    // ここで文字列を空にはできない
+    // sの不変な参照wordが発生しているため
+
+    println!("first word is {}", word);
+    s.clear();
 }
