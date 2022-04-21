@@ -22,8 +22,11 @@ fn main() {
     // 参照渡し
     ref_fn();
 
-    // 文字列スライス
+    // スライス
     slice_fn();
+
+    // 構造体
+    struct_fn();
 }
 
 fn tup_fn() {
@@ -257,4 +260,48 @@ fn slice_fn() {
     let a = [1, 2, 3, 4, 5];
     let slice = &a[1..3];
     println!("slice first part is {}", slice[0]);
+}
+
+fn struct_fn() {
+    // 構造体の定義
+    struct User {
+        username: String,
+        email: String,
+        sign_in_count: u64,
+        active: bool,
+    }
+
+    // 構造体のインスタンス作成
+    // mutで構造体全体を可変にできる(一部フォールドだけ可変にはできない)
+    let mut user1 = User {
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        active: true,
+        sign_in_count: 1,
+    };
+    user1.email = String::from("anotherremail@example.com");
+    println!("user1 struct: {}, {}, {}, {}", user1.username, user1.email, user1.active, user1.sign_in_count);
+
+    fn build_user(email: String, username: String) -> User {
+        User {
+            email,    // 引数emailが自動で代入
+            username, // 引数usernameが自動で代入
+            active: true,
+            sign_in_count: 1,
+        }
+    }
+    let user2 = build_user(String::from("hogeo@example.com"), String::from("hogeo"));
+    println!("user2 struct: {}, {}, {}, {}", user2.username, user2.email, user2.active, user2.sign_in_count);
+
+    let user3 = User {
+        email: String::from("another@example.com"),
+        username: String::from("another"),
+        ..user1  // 他のインスタンスの値を引き継ぐことができる
+    };
+    println!("user3 struct: {}, {}, {}, {}", user3.username, user3.email, user3.active, user3.sign_in_count);
+
+    // タプル構造体
+    struct Color(i32, i32, i32);
+    let black = Color(0, 0, 0);
+    println!("r = {}, g = {}, b = {}", black.0, black.1, black.2);
 }
