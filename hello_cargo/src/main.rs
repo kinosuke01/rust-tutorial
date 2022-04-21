@@ -214,16 +214,17 @@ fn ref_fn() {
 fn slice_fn() {
     // 文字列スライス
     // 文字列への部分的な参照
-    /*
     let s = String::from("hello world");
     let hello = &s[0..5];  // 0から4(5の1つ手前)の文字列
     let world = &s[6..11]; // 6から10(11の1つ手前)の文字列
     let hello2 = &s[..5];  // 最初から4まで
     let world2 = &s[6..];  // 6から最後まで
     let s2 = &s[..];       // 最初から最後まで
-    */
+    println!("{}, {}, {}, {}, {}, {}", s, hello, world, hello2, world2, s2);
 
-    fn first_word(s: &String) -> &str {
+    // &strは文字列スライス
+    // &strで、std:string:Stringの参照も受け取れる
+    fn first_word(s: &str) -> &str {
         // 文字列の各値を確認するためバイト列に変換
         let bytes = s.as_bytes();
 
@@ -247,4 +248,13 @@ fn slice_fn() {
 
     println!("first word is {}", word);
     s.clear();
+
+    // 文字リテラルは文字列スライス
+    let word = first_word("hogehoge fugafuga piyopiyo");
+    println!("first word is {}", word);
+
+    // 配列のスライスもできる
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];
+    println!("slice first part is {}", slice[0]);
 }
