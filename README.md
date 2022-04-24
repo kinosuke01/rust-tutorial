@@ -2,7 +2,7 @@
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
 
-TODO: https://doc.rust-jp.rs/book-ja/ch05-03-method-syntax.html
+TODO: https://doc.rust-jp.rs/book-ja/ch06-00-enums.html
 
 ## コマンドメモ
 ```
