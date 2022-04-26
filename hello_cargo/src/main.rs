@@ -27,6 +27,9 @@ fn main() {
 
     // 構造体
     struct_fn();
+
+    // Enum
+    enum_fn();
 }
 
 fn tup_fn() {
@@ -304,4 +307,92 @@ fn struct_fn() {
     struct Color(i32, i32, i32);
     let black = Color(0, 0, 0);
     println!("r = {}, g = {}, b = {}", black.0, black.1, black.2);
+}
+
+fn enum_fn() {
+    // enumの定義
+    #[derive(Debug)]
+    enum IpAddrKind {
+        V4,
+        V6,
+    }
+    let four = IpAddrKind::V4; // IpAddrKind型でV4を表す
+    let six = IpAddrKind::V6;  // IpAddrKind型でV6を表す
+    println!("{:?}, {:?}", four, six);
+
+    // 列挙子とデータは紐付けできる
+    #[derive(Debug)]
+    enum IpAddr {
+        V4(u8, u8, u8, u8),
+        V6(String),
+    }
+    let home = IpAddr::V4(127, 0, 0, 1);
+    let loopback = IpAddr::V6(String::from("::1"));
+    println!("{:?}, {:?}", home, loopback);
+
+    // IpAddrに関する標準ライブラリある
+    // https://doc.rust-lang.org/std/net/enum.IpAddr.html
+
+    enum Message {
+        // Quit,
+        // Move {x: i32, y: i32},
+        Write(String),
+        // ChangeColor(i32, i32, i32),
+    }
+    // enumにメソッドを追加できる
+    impl Message {
+        fn call(&self) {
+            // ここに処理を書く
+        }
+    }
+    let m = Message::Write(String::from("hello"));
+    m.call();
+
+    /*
+        存在するかしないかを表す列挙体Option<T>
+        標準ライブラリで定義されている
+        https://doc.rust-lang.org/std/option/enum.Option.html
+
+        enum Option<T> {
+            Some(T),
+            None,
+        }
+        Option::なし、Some,Noneだけで使える
+    */
+
+    // let some_number = Some(5);
+    // let some_string = Some("a string");
+    // Noneを設定する場合は、
+    // Someの型がわからないので指定する必要あり
+    // let absent_number: Option<i32> = None;
+
+    // matchを使って、列挙子ごとの挙動を切り替える
+    #[derive(Debug)]
+    enum UsState {
+        Alaska,
+    }
+    enum Coin {
+        Peny,
+        Nickel,
+        Dime,
+        Quarter(UsState),
+    }
+    fn value_in_cents(coin: Coin) -> u32 {
+        match coin {
+            Coin::Peny => {
+                println!("Lucky penny!");
+                1
+            },
+            Coin::Nickel => 5,
+            Coin::Dime => 10,
+            Coin::Quarter(state) => {
+                println!("State quarter from {:?}!", state);
+                25
+            }
+        }
+    }
+    value_in_cents(Coin::Peny);
+    value_in_cents(Coin::Nickel);
+    value_in_cents(Coin::Dime);
+    value_in_cents(Coin::Quarter(UsState::Alaska));
 }
