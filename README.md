@@ -2,7 +2,7 @@
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
 
-TODO: https://doc.rust-jp.rs/book-ja/ch06-02-match.html
+TODO: https://doc.rust-jp.rs/book-ja/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
 
 ## コマンドメモ
 ```

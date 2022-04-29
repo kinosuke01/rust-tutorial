@@ -395,4 +395,35 @@ fn enum_fn() {
     value_in_cents(Coin::Nickel);
     value_in_cents(Coin::Dime);
     value_in_cents(Coin::Quarter(UsState::Alaska));
+
+    // Optionで処理を切り分ける
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            None => None,
+            Some(i) => Some(i + 1), // Some(5) はマッチする
+        }
+    }
+    let five = Some(5);
+    plus_one(five);
+    plus_one(None);
+
+    let some_u8_value = Some(0u8);
+    match some_u8_value {
+        Some(3) => println!("three"),
+        _ => (), // 他のすべてにマッチする
+    }
+    // 上記と同じように振る舞う if let
+    if let Some(3) = some_u8_value {
+        println!("three");
+    }
+ 
+    // if let では elseも使える
+    let mut count = 0;
+    let coin = Coin::Quarter(UsState::Alaska);
+    if let Coin::Quarter(state) = coin {
+        println!("State quarter from {:?}!", state);
+    } else {
+        count += 1;
+        println!("count value is {}", count);
+    }
 }
