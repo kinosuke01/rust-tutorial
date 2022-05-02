@@ -1,3 +1,5 @@
+// ref: https://doc.rust-jp.rs/book-ja/ch07-01-packages-and-crates.html
+
 // # 用語
 // - パッケージ: クレートをビルドし、テストし、共有できるCargoの機能
 // - クレート: ライブラリか実行可能ファイルを生成する、木構造をしたモジュール群
@@ -23,7 +25,7 @@ use self::front_of_house::hosting;
 // pub use self::front_of_house::hosting;
 
 pub fn eat_at_restrant() {
-    // 接待パスの呼び出し
+    // 絶対パスでの呼び出し
     crate::front_of_house::hosting::add_to_waitlist();
 
     // 相対パスでの呼び出し
