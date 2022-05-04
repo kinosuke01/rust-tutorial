@@ -2,7 +2,7 @@
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
 
-TODO: https://doc.rust-jp.rs/book-ja/ch08-00-common-collections.html
+TODO: https://doc.rust-jp.rs/book-ja/ch08-02-strings.html
 
 ## コマンドメモ
 ```
