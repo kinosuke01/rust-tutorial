@@ -30,6 +30,9 @@ fn main() {
 
     // Enum
     enum_fn();
+
+    // ベクタ
+    vec_fn();
 }
 
 fn tup_fn() {
@@ -426,4 +429,62 @@ fn enum_fn() {
         count += 1;
         println!("count value is {}", count);
     }
+}
+
+fn vec_fn() {
+    // ベクタはサイズを変更可能な配列
+    // https://doc.rust-jp.rs/rust-by-example-ja/std/vec.html
+    // https://doc.rust-lang.org/std/vec/
+
+    // ベクタの作成と更新
+    // 他の変数と同じくスコープを抜けたら、メモリから解放される
+    let mut v: Vec<i32> = Vec::new();
+    v.push(5);
+    v.push(6);
+    v.push(7);
+    v.push(8);
+
+    // vec!は、ベクタを生成するマクロ
+    let v = vec![1, 2, 3, 4, 5];
+
+    // 添字で要素の参照にアクセス
+    // 存在しない要素にアクセスするとpanicになる
+    // ※要素の不変参照が発生したため、vは可変にはできない
+    let third: &i32 = &v[2];
+    println!("The third elementis {}", third);
+
+    // getメソッドで要素にアクセスする(Option<&T>で値を得られる)
+    match v.get(2) {
+        Some(third) => println!("The third elementis {}", third),
+        None => println!("The is no third element."),
+    }
+
+    // forを使って、ベクタの各要素にアクセス
+    let v = vec![100, 32, 57];
+    for i in &v {
+        println!("{}", i);
+    }
+
+    // 要素の更新を行う
+    let mut v = vec![100, 32, 57];
+    for i in &mut v {
+        // *iで参照外しをして値を書き換える
+        *i += 50;
+    }
+    // vec is [150, 82, 107]
+    println!("vec is {:?}", v);
+
+    // ベクタ型の各要素に違う型を使いたい場合は、enumを活用する
+    #[derive(Debug)]
+    enum SpreadsheetCell {
+        Int(i32),
+        Float(f64),
+        Text(String),
+    }
+    let row = vec![
+        SpreadsheetCell::Int(3),
+        SpreadsheetCell::Text(String::from("blue")),
+        SpreadsheetCell::Float(10.12),
+    ];
+    println!("row is {:?}", row);
 }
