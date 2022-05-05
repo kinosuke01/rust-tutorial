@@ -33,6 +33,9 @@ fn main() {
 
     // ベクタ
     vec_fn();
+
+    // 文字列
+    string_fn();
 }
 
 fn tup_fn() {
@@ -487,4 +490,72 @@ fn vec_fn() {
         SpreadsheetCell::Float(10.12),
     ];
     println!("row is {:?}", row);
+}
+
+// ref: https://doc.rust-jp.rs/book-ja/ch08-02-strings.html
+fn string_fn() {
+    // 文字列の生成
+    // let mut s = String::new();
+
+    // 文字列リテラルを文字列に変換(1)
+    let data = "initial contents";
+    let s = data.to_string();
+    println!("{}", s);
+
+    // 文字列リテラルを文字列に変換(2)
+    let s = "initial contents".to_string();
+    println!("{}", s);
+
+    // 文字列リテラルを文字列に変換(3)
+    let s = String::from("initial contenst");
+    println!("{}", s);
+
+    // 文字列の更新
+    // push_strメソッドでStringに文字列スライスを追記する
+    let mut s1 = String::from("foo");
+    let s2 = "bar";
+    s1.push_str(s2);
+    // s2は参照渡しなので、所有権はpush_strに奪われない
+    println!("s2 is {}", s2);
+
+    // 文字列の連結
+    let s1 = String::from("Hello, ");
+    let s2 = String::from("world!");
+    let s3 = s1 + &s2; 
+    // + 演算子の実体はこんな感じ
+    // fn add(self, s: &str) -> String {
+    // - s1はムーブされもう使用できない
+    // - s2は&strじゃないけど"参照外し型強制"が実行されるので使えるらしい。
+    //   s2は参照渡しなので引き続き使える
+    println!("{}", s3);
+
+    let s1 = String::from("tic");
+    let s2 = String::from("tac");
+    let s3 = String::from("toe");
+    // format!マクロだとムーブされることなく、文字列の連結ができる
+    let s = format!("{}-{}-{}", s1, s2, s3);
+    println!("{}", s);
+
+    // Rustは文字列に対して添字アクセスできない
+    // 文字列はマルチバイトを含み、文字列はVec<u8>のラッパで1要素は1バイトから成ることから
+    // 添字で値を取得しても1文字が取得できるとは限らないため
+    // let s1 = String::from("hello");
+    // let h = s1[0]; // error!!
+
+    let hello = String::from("こんにちは");
+    // lenは文字の長さではなくバイト数を取得する
+    let len = hello.len();
+    println!("len is {}", len);
+    // マルチバイト文字を、1文字分割するところでスライスするとpanic発生
+    // let s = &hello[0..4];
+    // println!("s is {}", s);
+
+    // マルチバイト文字を1文字ずつ取り出したいときはchar()を使う
+    for c in hello.chars() {
+        println!("{}", c);
+    }
+    // バイトごとに出力する
+    for b in hello.bytes() {
+        println!("{}", b);
+    }
 }
