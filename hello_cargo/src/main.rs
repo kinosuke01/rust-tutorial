@@ -36,6 +36,9 @@ fn main() {
 
     // 文字列
     string_fn();
+
+    // ハッシュマップ
+    hashmap_fn();
 }
 
 fn tup_fn() {
@@ -558,4 +561,30 @@ fn string_fn() {
     for b in hello.bytes() {
         println!("{}", b);
     }
+}
+
+fn hashmap_fn() {
+    // ハッシュマップを使う場合はuseが必要
+    // 生成するための組み込みマクロはない
+    use std::collections::HashMap;
+
+    // {"Blue" => 10, "Yellow" => 5} を作成
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 5);
+    println!("{:?}", scores);
+
+    // tarms.iter().zip(initial_scores.iter()) で
+    // ("Blue", 10), ("Yellow", 50) のようなタプルを要素とするイテレータができる
+    // https://doc.rust-lang.org/core/iter/trait.Iterator.html#method.zip
+    // これにcollectメソッドをかませると、HashMapになる
+    let teams = vec![String::from("Blue"), String::from("Yelllow")];
+    let initial_scores = vec![10, 50];
+    let scores: HashMap<_, _>  = teams.iter().zip(initial_scores.iter()).collect();
+    println!("{:?}", scores);
+
+    let field_name = String::from("Favorite color");
+    let field_value = String::from("Blue");
+    let mut map = HashMap::new();
+    map.insert(field_name, field_value);
 }
