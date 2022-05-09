@@ -9,13 +9,6 @@ fn main() {
     while_fn();
     for_fn();
 
-    // 温度を華氏と摂氏で変換する。
-    println!("{}", to_fahrenheit(10.0));
-    println!("{}", to_celsius(50.0));
-
-    // フィボナッチ数列のn番目を生成する。
-    println!("{}", fibonacci_of(10));
-
     // 所有権について
     ownership_fn();
 
@@ -116,22 +109,6 @@ fn for_fn() {
         println!("{}", number);
     }
     println!("LIFTOFF!!!!!");
-}
-
-fn to_fahrenheit(x: f64) -> f64 {
-    x * 1.8 + 32.0
-}
-
-fn to_celsius(x: f64) -> f64 {
-    (x - 32.0) / 1.8
-}
-
-fn fibonacci_of(x: u32) -> u32 {
-    if x == 0 || x == 1{
-        x
-    } else {
-        fibonacci_of(x - 2) + fibonacci_of(x - 1)
-    }
 }
 
 // 所有権
@@ -586,5 +563,53 @@ fn hashmap_fn() {
     let field_name = String::from("Favorite color");
     let field_value = String::from("Blue");
     let mut map = HashMap::new();
+    // field_name,field_valueの所有権はハッシュにムーブする
     map.insert(field_name, field_value);
+
+    // 要素へのアクセス
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
+    let team_name = String::from("Blue");
+    // getメソッドで参照できる
+    let score = scores.get(&team_name);
+    match score {
+        Some(x) => {
+            println!("{} socore is {}", team_name, x);
+        },
+        _ => {},
+    }
+    // forループで走査できる
+    for (key, value) in &scores {
+        println!("{}: {}", key, value);
+    }
+
+    // 要素の更新
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    // 同じキーを指定すると上書きされる
+    scores.insert(String::from("Blue"), 25);
+    if let Some(x) = scores.get("Blue") {
+        println!("Blue score is {}", x);
+    }
+    // 値がないときだけ更新するケース
+    // entryはenumで、値の有無の確認ができる
+    // or_insertは、キーが存在するときは値の可変参照を返す
+    // なければ、引数を値として挿入して、可変参照を変えす
+    scores.entry(String::from("Yellow")).or_insert(50);
+    scores.entry(String::from("Blue")).or_insert(100);
+    for (key, value) in &scores {
+        println!("{}: {}", key, value);
+    }
+
+    let text = "hello world wondeful world";
+    let mut map = HashMap::new();
+    for word in text.split_whitespace() {
+        // 値の可変参照を返す(値がなければ0を挿入して返す)
+        let count = map.entry(word).or_insert(0);
+        // 可変参照の参照外しをしてインクリメント
+        // 参照なのでhashの値が更新される
+        *count += 1;
+    }
+    println!("{:?}", map);
 }
