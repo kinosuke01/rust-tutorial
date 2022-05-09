@@ -1,6 +1,8 @@
 ## Rust Tutorial
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
+ref: https://doc.rust-jp.rs/book-ja/
+ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 
 TODO: https://doc.rust-jp.rs/book-ja/ch08-03-hash-maps.html
 
