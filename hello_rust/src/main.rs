@@ -32,6 +32,8 @@ fn main() {
 
     // ハッシュマップ
     hashmap_fn();
+
+    panic_fn();
 }
 
 fn tup_fn() {
@@ -612,4 +614,10 @@ fn hashmap_fn() {
         *count += 1;
     }
     println!("{:?}", map);
+}
+
+fn panic_fn() {
+    // RUST_BACKTRACE=1 cargo run
+    // のように環境変数をセットするとpanic発生時にBACKTRACEが得られる
+    // panic!("crash and burn");
 }

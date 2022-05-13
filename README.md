@@ -4,7 +4,7 @@ ref: https://www.rust-lang.org/ja/what/wasm
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 
-TODO: https://doc.rust-jp.rs/book-ja/ch09-01-unrecoverable-errors-with-panic.html
+TODO: https://doc.rust-jp.rs/book-ja/ch09-02-recoverable-errors-with-result.html
 
 ## コマンドメモ
 ```

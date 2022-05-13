@@ -6,3 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+# default:
+#   - panic発生時にメモリの片付けをする
+# abort:
+#   - panic発生時にメモリの片付けをせずに異常終了する
+#   - メモリの片付けはOSが担う。実行ファイルのサイズを小さくできる。
+#   - 以下のようにCargo.tomlに設定を行う
+# [profile.release]
+# panic = 'abort'
