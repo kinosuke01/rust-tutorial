@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::ErrorKind;
+
 fn main() {
     println!("Hello, world!");
 
@@ -34,6 +37,8 @@ fn main() {
     hashmap_fn();
 
     panic_fn();
+
+    error_fn();
 }
 
 fn tup_fn() {
@@ -620,4 +625,34 @@ fn panic_fn() {
     // RUST_BACKTRACE=1 cargo run
     // のように環境変数をセットするとpanic発生時にBACKTRACEが得られる
     // panic!("crash and burn");
+}
+
+fn error_fn() {
+    let file_path = "./hello.txt";
+    let f = File::open(file_path);
+    let f = match f {
+        Ok(file) => file,
+        // ファイルが無い場合
+        // マッチガード(matchのオマケ機能)で更に細かい条件分岐を行っている
+        Err(ref error) if error.kind() == ErrorKind::NotFound => {
+            // ファイルを新規作成する
+            match File::create(file_path) {
+                Ok(fc) => fc,
+                Err(e) => {
+                    panic!(
+                        "Tried to create file but there was a problem: {:?}",
+                        e
+                    );
+                }
+            }
+        },
+        // その他のエラーの場合
+        Err(error) =>  {
+            panic!(
+                "There was problem opening the file {:?}",
+                error
+            )
+        }
+    };
+    println!("file info is {:?}", f);
 }
