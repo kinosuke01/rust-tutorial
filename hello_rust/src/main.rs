@@ -701,4 +701,26 @@ fn error_fn() {
         Ok(s) => println!("username is {}", s),
         Err(e) => println!("error is {:?}", e),
     }
+
+    // 値エラーを構造体に閉じ込める
+    pub struct Guess {
+        value: u32,
+    }
+    impl Guess {
+        pub fn new (value: u32) -> Guess {
+            if value < 1 || value > 100 {
+                panic!("Guess value must be between 1 and 100, got {}", value);
+            }
+
+            Guess {
+                value
+            }
+        }
+
+        pub fn value(&self) -> u32 {
+            self.value
+        }
+    }
+    let guess = Guess::new(12);
+    println!("Guess.value is {}", guess.value());
 }

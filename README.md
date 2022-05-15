@@ -4,7 +4,7 @@ ref: https://www.rust-lang.org/ja/what/wasm
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 
-TODO: https://doc.rust-jp.rs/book-ja/ch09-03-to-panic-or-not-to-panic.html
+TODO: https://doc.rust-jp.rs/book-ja/ch10-00-generics.html
 
 ## コマンドメモ
 ```
@@ -56,4 +56,13 @@ cargo check
 # リリース用ビルド
 # target/releaseに作成される
 cargo build --release
+```
+
+## Blocking waiting for file lock on package cache
+```
+cargo clean
+
+~/.cargo/.package-cache
+
+rm -rf ~/.cargo/registry/index/*
 ```
