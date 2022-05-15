@@ -684,4 +684,21 @@ fn error_fn() {
         Ok(s) => println!("username is {}", s),
         Err(e) => println!("error is {:?}", e),
     }
+    // read_username_from_fileの簡略形式
+    fn read_username_from_file2() -> Result<String, io::Error> {
+        // 末尾を ? とすることで、
+        // Errの場合に関数の戻り値として指定された型に変換してreturnする
+        let mut f = File::open("hello.txt")?;
+        let mut s = String::new();
+        f.read_to_string(&mut s)?;
+        Ok(s)
+
+        // さらに簡略化すると
+        // File::open("hello.txt")?.read_to_string(&mut s)?;
+        // Ok(s)
+    }
+    match read_username_from_file2() {
+        Ok(s) => println!("username is {}", s),
+        Err(e) => println!("error is {:?}", e),
+    }
 }
