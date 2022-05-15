@@ -43,6 +43,11 @@ fn main() {
             Err(_) => continue,
         };
 
+        if guess < 1 || guess > 100 {
+            println!("The secret number will be between 1 and 100");
+            continue;
+        }
+
         // {}はプレースホルダーにあたる
         println!("You guessed: {}", guess);
 
