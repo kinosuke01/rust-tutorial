@@ -41,6 +41,8 @@ fn main() {
     panic_fn();
 
     error_fn();
+
+    generics_fn();
 }
 
 fn tup_fn() {
@@ -723,4 +725,51 @@ fn error_fn() {
     }
     let guess = Guess::new(12);
     println!("Guess.value is {}", guess.value());
+}
+
+fn generics_fn() {
+    // ベクタのスライスを取り、最大値の要素を返す
+    fn largest_i32(list: &[i32]) -> i32 {
+        let mut largest = list[0];
+
+        for &item in list.iter() {
+            if item > largest {
+                largest = item;
+            }
+        }
+
+        largest
+    }
+
+    let number_list = vec![23, 50, 25, 100, 65];
+    let result = largest_i32(&number_list);
+    println!("The largest number is {}", result);
+
+    // 文字のスライスを取り、最大値の要素を返す
+    fn largest_char(list: &[char]) -> char {
+        let mut largest = list[0];
+
+        for &item in list.iter() {
+            if item > largest {
+                largest = item;
+            }
+        }
+
+        largest
+    }
+    let char_list = vec!['y', 'm', 'a', 'q'];
+    let result = largest_char(&char_list);
+    println!("The largest char is {}", result);
+
+    // なんらかの型Tに関してジェネリックである
+    fn largest<T>(list: &[T]) -> T {
+        let mut largest = list[0];
+        for &item in list.iter() {
+            // TODO
+            if item > largest {
+                largest = item;
+            }
+        }
+        largest
+    }
 }
