@@ -762,14 +762,49 @@ fn generics_fn() {
     println!("The largest char is {}", result);
 
     // なんらかの型Tに関してジェネリックである
-    fn largest<T>(list: &[T]) -> T {
-        let mut largest = list[0];
-        for &item in list.iter() {
-            // TODO
-            if item > largest {
-                largest = item;
+    // fn largest<T>(list: &[T]) -> T {
+    //     let mut largest = list[0];
+    //     for &item in list.iter() {
+    //         // TODO
+    //         // if item > largest {
+    //         //     largest = item;
+    //         // }
+    //     }
+    //     largest
+    // }
+
+    // ジェネリックな型を持つ構造体
+    struct Point<T> {
+        x: T,
+        y: T,
+    }
+    // メソッド追加
+    // implのあとに<T>を指定することで、
+    // コンパイラがPoint<T>のTをジェネリックな型であると判断できる
+    impl<T> Point<T> {
+        fn x(&self) -> &T {
+            &self.x
+        }
+    }
+    let i_struct = Point {x: 5, y: 10};
+    println!("Point x is {}", i_struct.x());    
+
+    // 2つの型をもたせるケース
+    struct PointType2<T, U> {
+        x: T,
+        y: U,
+    }
+    impl<T, U> PointType2<T, U> {
+        // <V>をメソッド名のあとに指定することで、
+        // Vがジェネリックな型であるとコンパイラに判断させる
+        fn mixup<V>(self, other: Point<V>) -> PointType2<T, V> {
+            PointType2 {
+                x: self.x,
+                y: other.y,
             }
         }
-        largest
     }
+    let if_struct = PointType2 {x: "hogehoge", y: 5.1};
+    let mixup_struct = if_struct.mixup(i_struct);
+    println!("mixup_struct x: {}, y: {}", mixup_struct.x, mixup_struct.y);
 }
