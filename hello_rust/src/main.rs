@@ -728,6 +728,11 @@ fn error_fn() {
 }
 
 fn generics_fn() {
+    // ジェネリクスを使用しても、
+    // 単相化(monomorphization)が行われるため、
+    // コードのパフォーマンスに大きく影響はしない
+    // https://doc.rust-jp.rs/book-ja/ch10-01-syntax.html
+
     // ベクタのスライスを取り、最大値の要素を返す
     fn largest_i32(list: &[i32]) -> i32 {
         let mut largest = list[0];
@@ -807,4 +812,28 @@ fn generics_fn() {
     let if_struct = PointType2 {x: "hogehoge", y: 5.1};
     let mixup_struct = if_struct.mixup(i_struct);
     println!("mixup_struct x: {}, y: {}", mixup_struct.x, mixup_struct.y);
+
+    // トレイト(=インターフェースのようなもの)
+    pub trait Summary {
+        fn summarize(&self) -> String;
+    }
+    pub struct NewsArticle {
+        pub headline: String,
+        pub location: String,
+        pub author: String,
+        pub content: String,
+    }
+    // Summaryトレイトを構造体上に実装する
+    impl Summary for NewsArticle {
+        fn summarize(&self) -> String {
+            format!("{}, by {} ({})", self.headline, self.author, self.location)
+        }
+    }
+    let news_article = NewsArticle {
+        headline: String::from("hello"),
+        location: String::from("your address"),
+        author: String::from("hogeyama"),
+        content: String::from("hello world!!!!"),
+    };
+    println!("news summary: {}", news_article.summarize());
 }
