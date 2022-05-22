@@ -44,6 +44,8 @@ fn main() {
     error_fn();
 
     generics_fn();
+
+    lifetime_fn();
 }
 
 fn tup_fn() {
@@ -904,4 +906,49 @@ fn generics_fn() {
     }
     let pair = Pair::new(10, 100);
     pair.cmp_display();
+}
+
+fn lifetime_fn() {
+    // この実装ではコンパイルが通らない
+    // 戻り値の&strがstr1とstr2のどちらの参照なのかわからないので
+    // この関数を呼び出した処理が、戻り値の破棄のタイミングがわからない
+    // fn longest(str1: &str, str2: &str) -> &str {
+    //     if str1.len() > str2.len() {
+    //         str1
+    //     } else {
+    //         str2
+    //     }
+    // }
+
+    // そこで、渡す引数のライフタイムは同一であると注釈をつける
+    // 以下はライフタイム'aを定義している
+    // これにより渡した引数の破棄タイミング(ライフタイム)が短い方が適用されて
+    // 戻り値として返される
+    fn longest<'a>(str1: &'a str, str2: &'a str) -> &'a str {
+        if str1.len() > str2.len() {
+            str1
+        } else {
+            str2
+        }
+    }
+
+    let string1 = String::from("abcd");
+    let result;
+    {
+        let string2 = "xyz";
+        result = longest(string1.as_str(), string2);
+        println!("The longest string is {}", result);
+    } // 短いライフタイムで揃えられるので、resultはここでスコープを抜ける
+
+    // 構造体の要素に参照を保持する場合、ライフタイム注釈を加える必要がある
+    struct ImportantExcerpt<'a> {
+        part: &'a str,
+    }
+    let novel = String::from("Call me Ishmeal. Some years ago...");
+    let first_sentence = novel.split('.').next().expect("Could not find a 'a'");
+    // iは、first_sentenceより長生きできない。共に破棄される。
+    let i = ImportantExcerpt {
+        part: first_sentence,
+    };
+    println!("ImportantExcerpt is {}", i.part);
 }
