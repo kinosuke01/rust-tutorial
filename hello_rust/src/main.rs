@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io;
 use std::io::Read;
 use std::io::ErrorKind;
+use std::fmt::Display;
 
 fn main() {
     println!("Hello, world!");
@@ -727,6 +728,7 @@ fn error_fn() {
     println!("Guess.value is {}", guess.value());
 }
 
+// https://doc.rust-jp.rs/book-ja/ch10-02-traits.html
 fn generics_fn() {
     // ジェネリクスを使用しても、
     // 単相化(monomorphization)が行われるため、
@@ -766,18 +768,6 @@ fn generics_fn() {
     let result = largest_char(&char_list);
     println!("The largest char is {}", result);
 
-    // なんらかの型Tに関してジェネリックである
-    // fn largest<T>(list: &[T]) -> T {
-    //     let mut largest = list[0];
-    //     for &item in list.iter() {
-    //         // TODO
-    //         // if item > largest {
-    //         //     largest = item;
-    //         // }
-    //     }
-    //     largest
-    // }
-
     // ジェネリックな型を持つ構造体
     struct Point<T> {
         x: T,
@@ -816,6 +806,13 @@ fn generics_fn() {
     // トレイト(=インターフェースのようなもの)
     pub trait Summary {
         fn summarize(&self) -> String;
+        fn read_more_author(&self) -> String;
+
+        // デフォルト実装
+        // トレイトを組み込んだ先で実装しなくても使える
+        fn read_more(&self) -> String {
+            format!("(Read more from {}...)", self.read_more_author())
+        }
     }
     pub struct NewsArticle {
         pub headline: String,
@@ -828,12 +825,83 @@ fn generics_fn() {
         fn summarize(&self) -> String {
             format!("{}, by {} ({})", self.headline, self.author, self.location)
         }
+
+        fn read_more_author(&self) -> String {
+            format!("@{}", self.author)
+        }
     }
     let news_article = NewsArticle {
-        headline: String::from("hello"),
-        location: String::from("your address"),
-        author: String::from("hogeyama"),
-        content: String::from("hello world!!!!"),
+        headline: String::from("Penguins win the Stanley Cup Championship!"),
+        location: String::from("Pittsburgh, PA, USA"),
+        author: String::from("Iceburgh"),
+        content: String::from("The Pittsburgh Penguins once again are the best hockey team in the NHL."),
     };
-    println!("news summary: {}", news_article.summarize());
+    println!("news summary: {}, {}", news_article.summarize(), news_article.read_more());
+
+    // 引数にトレイトを指定する場合は、&implキーワードと共にトレイト名を渡す
+    pub fn notify(item: &impl Summary) {
+        println!("Breaking news! {}", item.summarize());
+    }
+    // impl Trait構文は、以下"トレイト境界構文"の糖衣構文にあたる
+    // pub fn notify<T: Summary>(item: &T) {}
+    notify(&news_article);
+
+    // 複数のトレイト境界を指定する場合
+    // pub fn notify(item: &(impl Summary + Display)) {}
+    // pub fn notify<T: Summary + Display>(Item: &T) {}
+
+    // トレイトを返す関数の書き方
+    fn returns_summarizable() -> impl Summary {
+        NewsArticle {
+            headline: String::from("Penguins win the Stanley Cup Championship!"),
+            location: String::from("Pittsburgh, PA, USA"),
+            author: String::from("Iceburgh"),
+            content: String::from("The Pittsburgh Penguins once again are the best hockey team in the NHL."),
+        }
+    }
+    let something = returns_summarizable();
+    println!("something summary is {}", something.summarize());
+
+    // なんらかの型Tに関してジェネリックである
+    // PartialOrdトレイトで比較(<や>)ができる
+    // Copyトレイトでスライスからの要素取り出しでcopyができる
+    fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+        let mut largest = list[0];
+        for &item in list.iter() {
+            if item > largest {
+                largest = item;
+            }
+        }
+        largest
+    }
+    let number_list = vec![34, 50, 25, 100, 65];
+    let result = largest(&number_list);
+    println!("The largest number is {}", result);
+
+    let char_list = vec!['y', 'm', 'a', 'q'];
+    let result = largest(&char_list);
+    println!("The largest char is {}", result);
+
+    // ブランケット実装
+    // ジェネリックな型が特定の条件を満たしている場合にだけ実装されるメソッド
+    struct Pair<T> {
+        x: T,
+        y: T,
+    }
+    impl<T> Pair<T> {
+        fn new(x: T, y: T) -> Self {
+            Self {x, y}
+        }
+    }
+    impl<T: Display + PartialOrd> Pair<T> {
+        fn cmp_display(&self) {
+            if self.x >= self.y {
+                println!("The largest member is x = {}", self.x);
+            } else {
+                println!("The largest mumber is y = {}", self.y);
+            }
+        }
+    }
+    let pair = Pair::new(10, 100);
+    pair.cmp_display();
 }
