@@ -4,7 +4,7 @@ ref: https://www.rust-lang.org/ja/what/wasm
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 
-TODO: https://doc.rust-jp.rs/book-ja/ch10-03-lifetime-syntax.html
+TODO: https://doc.rust-jp.rs/book-ja/ch11-01-writing-tests.html
 
 ## コマンドメモ
 ```
