@@ -951,4 +951,41 @@ fn lifetime_fn() {
         part: first_sentence,
     };
     println!("ImportantExcerpt is {}", i.part);
+
+    // ライフタイム省略
+    // fn first_word(s: &str) -> &str {
+    // は、以下のように解釈されてコンパイルされる
+    // fn first_word<'a>(s: &'a str) -> &'a str {
+
+    impl<'a> ImportantExcerpt<'a> {
+        fn announce_and_return_part(&self, announcement: &str) -> &str {
+            println!("Attention please: {}", announcement);
+            // メソッドが参照を返す場合、ライフタイムはselfに沿う
+            self.part
+        }
+    }
+    i.announce_and_return_part("next station number is 12");
+
+    // staticなライフタイム指定
+    // バイナリに含まれる値になり、破棄されない
+    let s: &'static str = "I have a static lifetime.";
+    println!("static lifetime variable is [{}]", s);
+
+    // ジェネリクスとトレイトライフタイムのあわせ技
+    fn longest_with_an_announcement<'a, T>(
+        x: &'a str,
+        y: &'a str,
+        ann: T,
+    ) -> &'a str
+    where
+        T: Display,
+    {
+        println!("Announcement! {}", ann);
+        if x.len() > y. len() {
+            x
+        } else {
+            y
+        }
+    }
+    println!("{}", longest_with_an_announcement("10", "20", "hello everyone!!"));
 }
