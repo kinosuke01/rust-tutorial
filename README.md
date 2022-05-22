@@ -36,6 +36,8 @@ rustfmt main.rs
 cargo new hello_cargo
 # バイナリ生成プロジェクトにする場合
 cargo new hello_cargo --bin
+# ライブラリを作成する場合
+cargo new adder --lib
 
 # プロジェクトビルド
 # target/debug/xxxx に実行ファイルができる
@@ -56,6 +58,9 @@ cargo check
 # リリース用ビルド
 # target/releaseに作成される
 cargo build --release
+
+# テスト
+cargo test
 ```
 
 ## Blocking waiting for file lock on package cache
