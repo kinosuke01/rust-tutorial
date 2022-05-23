@@ -4,7 +4,7 @@ ref: https://www.rust-lang.org/ja/what/wasm
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 
-TODO: https://doc.rust-jp.rs/book-ja/ch12-00-an-io-project.html
+TODO: https://doc.rust-jp.rs/book-ja/ch12-02-reading-a-file.html
 
 ## コマンドメモ
 ```
@@ -87,3 +87,6 @@ cargo clean
 
 rm -rf ~/.cargo/registry/index/*
 ```
+
+## Other
+- ライブラリクレートは https://crates.io/ から検索できる 
