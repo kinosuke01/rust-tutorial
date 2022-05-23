@@ -6,8 +6,16 @@ impl DummyStruct {
     fn is_hogehoge(&self) -> bool {
         true
     }
+
+    fn do_panic(&self) {
+        panic!("PanicPanic!!");
+    }
+}
+pub fn it_adds_two(i: i32) -> i32{
+    i + 2
 }
 
+// cfg(test)属性を追加することで、cargo testのときだけコンパイル対象となる
 #[cfg(test)]
 mod tests {
     // 外部モジュールで定義されたテスト対象すべてを、
@@ -43,5 +51,21 @@ mod tests {
         // 値がtrueか
         // 値がfalseだと失敗する
         assert!(dummy.is_hogehoge());
+    }
+
+    #[test]
+    fn test_comment() {
+        println!("HOGHEOGHEGOEHGOEHGOEHGOEHGO {}", 111);
+        // 第2引数以降にformat!と同じ渡し方でコメントを差し込める
+        assert!(true, "This value should be {}", true);
+    }
+
+    // panic発生をチェックするときは、#[should_panic]属性を追加する
+    // expectedで、失敗メッセージに含まれるべき文字列を指定できる
+    #[test]
+    #[should_panic(expected = "Panic!")]
+    fn test_panic() {
+        let dummy = DummyStruct{name: String::from("jiro")};
+        dummy.do_panic();
     }
 }

@@ -4,7 +4,7 @@ ref: https://www.rust-lang.org/ja/what/wasm
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 
-TODO: https://doc.rust-jp.rs/book-ja/ch11-01-writing-tests.html
+TODO: https://doc.rust-jp.rs/book-ja/ch11-03-test-organization.html
 
 ## コマンドメモ
 ```
@@ -61,6 +61,22 @@ cargo build --release
 
 # テスト
 cargo test
+
+# cargo testで使用できるオプションを表示
+cargo test --help
+
+-- という区分記号のあとに使えるオプションを表示
+cargo test -- --help
+
+# テストを実行するスレッド数を指定
+cargo test -- --test-threads=1
+
+# 成功したテストの標準出力(println!の結果など)は表示されないが、
+# 以下のオプションを指定することで表示できる
+cargo test -- --nocapture
+
+# 指定文字列にマッチしたテストだけ実行する
+cargo test it_works 
 ```
 
 ## Blocking waiting for file lock on package cache
