@@ -3,8 +3,10 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://www.rust-lang.org/ja/what/wasm
 ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
+ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch12-02-reading-a-file.html
+TODO: https://doc.rust-jp.rs/book-ja/ch12-03-improving-error-handling-and-modularity.html
+https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html
 
 ## コマンドメモ
 ```
