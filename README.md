@@ -5,7 +5,7 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch12-03-improving-error-handling-and-modularity.html
+TODO: https://doc.rust-jp.rs/book-ja/ch12-04-testing-the-librarys-functionality.html
 https://doc.rust-lang.org/book/ch12-03-improving-error-handling-and-modularity.html
 
 ## コマンドメモ
