@@ -5,7 +5,7 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch12-05-working-with-environment-variables.html
+TODO: https://doc.rust-jp.rs/book-ja/ch13-00-functional-features.html
 
 ## コマンドメモ
 ```
