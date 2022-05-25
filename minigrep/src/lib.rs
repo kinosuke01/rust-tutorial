@@ -2,7 +2,8 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::error::Error;
 
-struct Config {
+// 各構造体や関数はpublicにしないと、main.rsから呼べない
+pub struct Config {
     pub query: String,
     pub filename: String,
 }
