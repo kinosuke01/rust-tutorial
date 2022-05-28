@@ -3,6 +3,8 @@ use std::io;
 use std::io::Read;
 use std::io::ErrorKind;
 use std::fmt::Display;
+use std::thread;
+use std::time::Duration;
 
 fn main() {
     println!("Hello, world!");
@@ -46,6 +48,8 @@ fn main() {
     generics_fn();
 
     lifetime_fn();
+
+    closure_fn();
 }
 
 fn tup_fn() {
@@ -988,4 +992,64 @@ fn lifetime_fn() {
         }
     }
     println!("{}", longest_with_an_announcement("10", "20", "hello everyone!!"));
+}
+
+fn closure_fn() {
+    // クロージャの定義
+    // 匿名関数を変数に代入する
+    let expensive_closure = |num| {
+        println!("calculating slowly...");
+        thread::sleep(Duration::from_secs(1));
+        num
+    };
+    expensive_closure(5);
+
+    // 型注釈をもたせることもできるが、
+    // 基本的にコンパイラが型推論をしてくれるので書かなくてもよい
+    // let expensive_closure = |num: u32| -> u32 {
+    //     println!("calculating slowly...");
+    //     thread::sleep(Duration::from_secs(2));
+    //     num
+    // };
+
+    // クロージャはFn, FnMut, FnOnce のいずれかのトレイトを持っている
+    // calculationには、トレイと境界を指定したジェネリックな型を設定
+    struct Cacher<T>
+        where T: Fn(u32) -> u32
+    {
+        calculation: T,
+        value: Option<u32>,
+    }
+    impl<T> Cacher<T>
+        where T: Fn(u32) -> u32
+    {
+        // 引数としてクロージャを受け取る
+        fn new(calculation: T) -> Cacher<T> {
+            Cacher {
+                calculation,
+                value: None,
+            }
+        }
+
+        // 遅延評価メソッドを定義
+        // 値があればそれを返し、なければ取得とvalueセットして値を返す
+        fn value(&mut self, arg: u32) -> u32 {
+            match self.value {
+                Some(v) => v,
+                None => {
+                    let v = (self.calculation)(arg);
+                    self.value = Some(v);
+                    v
+                },
+            }
+        }
+    }
+    // クロージャを渡して構造体を作成
+    let mut expensive_result = Cacher::new(|num| {
+        println!("calculating slowly...");
+        thread::sleep(Duration::from_secs(1));
+        num
+    });
+    expensive_result.value(2);
+    expensive_result.value(2);
 }

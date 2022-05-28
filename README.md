@@ -5,7 +5,7 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch13-00-functional-features.html
+TODO: https://doc.rust-jp.rs/book-ja/ch13-01-closures.html
 
 ## コマンドメモ
 ```
