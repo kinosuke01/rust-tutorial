@@ -1001,7 +1001,7 @@ fn closure_fn() {
     // 匿名関数を変数に代入する
     let expensive_closure = |num| {
         println!("calculating slowly...");
-        thread::sleep(Duration::from_secs(1));
+        thread::sleep(Duration::from_secs(0));
         num
     };
     expensive_closure(5);
@@ -1049,7 +1049,7 @@ fn closure_fn() {
     // クロージャを渡して構造体を作成
     let mut expensive_result = Cacher::new(|num| {
         println!("calculating slowly...");
-        thread::sleep(Duration::from_secs(1));
+        thread::sleep(Duration::from_secs(0));
         num
     });
     expensive_result.value(2);
@@ -1100,6 +1100,78 @@ fn iterator_fn() {
     assert_eq!(v1_iter.next(), None);
 
     // sumはv1_iterの所有権を奪う
+    let v1_iter = v1.iter();
     let total: i32 = v1_iter.sum();
     assert_eq!(total, 6);
+
+    // イテレートアダプタ - 他の種類にイテレータに変換する
+    let v1: Vec<i32> = vec![1, 2, 3];
+    // mapだけでは何も起こらないので
+    // v1.iter().map(|x| x + 1);
+    // collectでコレクション型に変換する必要がある
+    let v2: Vec<_> = v1.iter().map(|x| x + 1).collect();
+    assert_eq!(v2, vec![2, 3, 4]);
+
+    #[derive(PartialEq, Debug)]
+    struct Shoe {
+        size: u32,
+        style: String,
+    }
+    fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
+        // into_iter は所有権を奪うイテレータを作成する
+        // (可変参照を繰り返したい場合は iter_mut を使用する)
+        // filterでshoe_sizeに該当するものだけを抽出する
+        shoes.into_iter()
+            .filter(|s| s.size == shoe_size)
+            .collect()
+    }
+    let shoes = vec![
+        Shoe { size: 10, style: String::from("sneaker") },
+        Shoe { size: 13, style: String::from("sandal") },
+        Shoe { size: 10, style: String::from("boot") },
+    ];
+    let in_my_size = shoes_in_my_size(shoes, 10);
+    assert_eq!(
+        in_my_size,
+        vec![
+            Shoe { size: 10, style: String::from("sneaker") },
+            Shoe { size: 10, style: String::from("boot") },
+        ]
+    );
+
+    // Iteratorトレイトで独自のイテレータを作成する
+    struct Counter {
+        count: u32,
+    }
+    impl Counter {
+        fn new() -> Counter {
+            Counter { count: 0 }
+        }
+    }
+    // Iteratorトレイトを指定してnextメソッドを実装すればよい
+    impl Iterator for Counter {
+        type Item = u32;
+        fn next(&mut self) -> Option<Self::Item> {
+            self.count += 1;
+            if self.count < 6 {
+                Some(self.count)
+            } else {
+                None
+            }
+        }
+    }
+    let counter = Counter::new();
+    for c in counter {
+        println!("Got: {}", c);
+    }
+
+    // zipで (1, 2), (2, 3), (3, 4), (4, 5) になる
+    // mapで 2, 6, 12, 20
+    // filterで 6, 12
+    // sumで 18
+    let sum: u32 = Counter::new().zip(Counter::new().skip(1))
+                    .map(|(a, b)| a * b)
+                    .filter(|x| x % 3 == 0)
+                    .sum();
+    assert_eq!(18, sum);
 }
