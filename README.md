@@ -5,7 +5,7 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch13-02-iterators.html
+TODO: https://doc.rust-jp.rs/book-ja/ch13-03-improving-our-io-project.html
 
 ## コマンドメモ
 ```
