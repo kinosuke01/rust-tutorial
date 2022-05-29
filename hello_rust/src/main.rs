@@ -50,6 +50,8 @@ fn main() {
     lifetime_fn();
 
     closure_fn();
+
+    iterator_fn();
 }
 
 fn tup_fn() {
@@ -1051,5 +1053,53 @@ fn closure_fn() {
         num
     });
     expensive_result.value(2);
-    expensive_result.value(2);
+
+    // クロージャは自身が定義されたスコープにある変数にアクセスできる
+    let x = 4;
+    let equal_to_x = |z| z == x;
+    let y = 4;
+    assert!(equal_to_x(y));
+
+    // moveを指定するとクロージャに所有権がムーブする
+    let x = vec![1, 2, 3];
+    let equal_to_x = move |z| z == x;
+    // println!("cant use x here: {:?}", x);
+    let y = vec![1, 2, 3];
+    assert!(equal_to_x(y));
+
+    // クロージャのトレイト
+    // FnOnce: 外の変数をムーブする
+    // FnMut: 可変借用する
+    // Fn: 不変借用する
+}
+
+fn iterator_fn() {
+    // イテレータの設定
+    let v1 = vec![1, 2, 3];
+    let v1_iter = v1.iter();
+    // forはv1_iterの所有権をムーブする
+    for val in v1_iter {
+        println!("Got: {}", val);
+    }
+
+    // イテレータのトレイトはこんな感じ
+    /*
+    pub trait Iterator {
+        type Item;
+        fn next(&mut self) -> Option<Self::Item>;
+    }
+    */
+
+    // nextで要素を順に取り出すことができる
+    // イテレータ内部でシーケンスが変わっているのでmut指定が必要
+    let v1 = vec![1, 2, 3];
+    let mut v1_iter = v1.iter();
+    assert_eq!(v1_iter.next(), Some(&1));
+    assert_eq!(v1_iter.next(), Some(&2));
+    assert_eq!(v1_iter.next(), Some(&3));
+    assert_eq!(v1_iter.next(), None);
+
+    // sumはv1_iterの所有権を奪う
+    let total: i32 = v1_iter.sum();
+    assert_eq!(total, 6);
 }
