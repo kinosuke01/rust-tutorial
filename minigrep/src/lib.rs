@@ -11,7 +11,8 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
+    // 文字列スライスを受け取る版
+    pub fn new_v1(args: &[String]) -> Result<Config, &'static str> {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
@@ -24,6 +25,25 @@ impl Config {
         // nv::var関数は、 環境変数がセットされていたら、環境変数の値を含むOk列挙子の成功値になるResultを返す。
         // 環境変数がセットされていなければ、Err列挙子を返す。
         // is_err は Errの場合にtrueを返す
+        let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
+
+        Ok(Config { query, filename, case_sensitive })
+    }
+
+    // イテレータを所有権ごと受け取る版
+    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a query string"),
+        };
+
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a file name"),
+        };
+
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config { query, filename, case_sensitive })
@@ -62,16 +82,21 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
 
 // 戻り値ベクタの要素は、contentsの一部を切り取ったものなので、
 // ライフタイムはcontentsのものに揃える
-pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+pub fn search_v1<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let mut results = Vec::new();
-
     for line in contents.lines() {
         if line.contains(query) {
             results.push(line);
         }
     }
-
     results
+}
+
+// もっと簡潔に書ける
+pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    contents.lines()
+        .filter(|line| line.contains(query))
+        .collect()
 }
 
 pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
