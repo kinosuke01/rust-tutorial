@@ -5,7 +5,7 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch13-04-performance.html
+TODO: https://doc.rust-jp.rs/book-ja/ch15-01-box.html
 
 ## コマンドメモ
 ```
@@ -88,6 +88,20 @@ cargo clean
 
 rm -rf ~/.cargo/registry/index/*
 ```
+
+## Cargo
+ref: https://doc.rust-lang.org/cargo/
+ref: https://doc.rust-jp.rs/book-ja/ch14-00-more-about-cargo.html
+
+- リリースプロファイルの設定
+    - dev(デフォルト): デバッグしやすいように最適化
+        - cargo build
+    - release: プロダクション用に最適化
+        - cargo build --release
+- クレートの公開
+- ワークスペース
+- バイナリのインストール
+- Cargoの拡張 など
 
 ## Other
 - ライブラリクレートは https://crates.io/ から検索できる 

@@ -1174,4 +1174,7 @@ fn iterator_fn() {
                     .filter(|x| x % 3 == 0)
                     .sum();
     assert_eq!(18, sum);
+
+    // イテレータは、Rustのゼロコスト抽象化の１つ
+    // https://doc.rust-jp.rs/book-ja/ch13-04-performance.html
 }
