@@ -5,7 +5,7 @@ ref: https://doc.rust-jp.rs/book-ja/
 ref: https://doc.rust-jp.rs/rust-by-example-ja/index.html
 ref: https://doc.rust-jp.rs/
 
-TODO: https://doc.rust-jp.rs/book-ja/ch15-01-box.html
+TODO: https://doc.rust-jp.rs/book-ja/ch15-02-deref.html
 
 ## コマンドメモ
 ```

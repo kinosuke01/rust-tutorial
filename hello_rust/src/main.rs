@@ -16,42 +16,21 @@ fn main() {
     if_fn();
     while_fn();
     for_fn();
-
-    // 所有権について
     ownership_fn();
-
-    // 参照渡し
     ref_fn();
-
-    // スライス
     slice_fn();
-
-    // 構造体
     struct_fn();
-
-    // Enum
     enum_fn();
-
-    // ベクタ
     vec_fn();
-
-    // 文字列
     string_fn();
-
-    // ハッシュマップ
     hashmap_fn();
-
     panic_fn();
-
     error_fn();
-
     generics_fn();
-
     lifetime_fn();
-
     closure_fn();
-
     iterator_fn();
+    box_fn();
 }
 
 fn tup_fn() {
@@ -1177,4 +1156,34 @@ fn iterator_fn() {
 
     // イテレータは、Rustのゼロコスト抽象化の１つ
     // https://doc.rust-jp.rs/book-ja/ch13-04-performance.html
+}
+
+fn box_fn() {
+    // ListがListを再帰的に呼び出す構造
+    // ListがListの実体を呼び出すとメモリ確保容量が計算できないため、
+    // コンパイルできない
+    // Boxで囲うことでポインタになり容量計算ができるようになる
+    #[derive(Debug)]
+    enum List {
+        Cons(i32, Box<List>),
+        Nil,
+    }
+    use List::{Cons, Nil};
+
+    // 再帰的に呼び出す
+    let list = Cons(1,
+        Box::new(Cons(2,
+            Box::new(Cons(3,
+                Box::new(Nil))))));
+
+    match list {
+        Cons(i, b) => {
+            assert_eq!(1, i);
+            println!("{:?}", b);
+        },
+        Nil => {},
+    };
+
+    // BoxはDerefトレイトを実装しているため、参照のように扱える
+    // Box<T>がスコープを抜けると実体もメモリから削除される(Dropトレイトの実装)
 }
